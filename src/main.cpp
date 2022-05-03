@@ -21,6 +21,8 @@ int PSXerror;
 
 PSX::PSXDATA PSXdata;
 
+void readPSX();
+
 void setup() {
   delay(10);
 
@@ -29,6 +31,7 @@ void setup() {
   radio.setDataRate(RF24_250KBPS);
 	radio.setPALevel(RF24_PA_MAX);
 	radio.stopListening();
+  radio.powerUp();
 
   psx.setupPins(PS2_DATA_PIN, PS2_CMD_PIN, PS2_ATT_PIN, PS2_CLK_PIN, 10);
   psx.config(PSXMODE_ANALOG);
