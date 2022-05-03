@@ -74,7 +74,7 @@ void setup() {
   psx.setupPins(PS2_DATA_PIN, PS2_CMD_PIN, PS2_ATT_PIN, PS2_CLK_PIN, 10);
   psx.config(PSXMODE_ANALOG);
 
-  // send a beep
+  tone(BUZZER_PIN, 196, 200);
 }
 
 void loop() {
