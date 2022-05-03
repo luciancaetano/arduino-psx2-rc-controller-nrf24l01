@@ -8,19 +8,26 @@
 #define CE_RF_PIN 6
 #define CS_RF_PIN 7
 
+#define SCK_PIN 13
+#define MISO_PIN 12
+#define MOSI_PIN 11
+#define SS_PIN 10
+
 #define PS2_ATT_PIN  2
 #define PS2_CMD_PIN  3
 #define PS2_DATA_PIN  4
 #define PS2_CLK_PIN  5
 
-#define CHAN_PIN_BIT_1 8
-#define CHAN_PIN_BIT_2 9
-#define CHAN_PIN_BIT_3 10
-#define CHAN_PIN_BIT_4 11
-#define CHAN_PIN_BIT_5 12
-#define CHAN_PIN_BIT_6 13
-#define CHAN_PIN_BIT_7 14
-#define CHAN_PIN_BIT_8 15
+#define CHAN_PIN_BIT_1 6
+#define CHAN_PIN_BIT_2 7
+#define CHAN_PIN_BIT_3 8
+#define CHAN_PIN_BIT_4 A0
+#define CHAN_PIN_BIT_5 A1
+#define CHAN_PIN_BIT_6 A2
+#define CHAN_PIN_BIT_7 A3
+#define CHAN_PIN_BIT_8 A7
+
+#define BUZZER_PIN 9
 
 RF24 radio(CE_RF_PIN, CS_RF_PIN);
 PS2Keys keyValues;
@@ -35,6 +42,17 @@ void readPSX();
 void setup() {
   delay(10);
 
+  pinMode(CHAN_PIN_BIT_1, INPUT);
+  pinMode(CHAN_PIN_BIT_2, INPUT);
+  pinMode(CHAN_PIN_BIT_3, INPUT);
+  pinMode(CHAN_PIN_BIT_4, INPUT);
+  pinMode(CHAN_PIN_BIT_5, INPUT);
+  pinMode(CHAN_PIN_BIT_6, INPUT);
+  pinMode(CHAN_PIN_BIT_7, INPUT);
+  pinMode(CHAN_PIN_BIT_8, INPUT);
+
+  delay(10);
+
   int channel = 0;
   channel |= digitalRead(CHAN_PIN_BIT_1) << 0;
   channel |= digitalRead(CHAN_PIN_BIT_2) << 1;
@@ -45,8 +63,6 @@ void setup() {
   channel |= digitalRead(CHAN_PIN_BIT_7) << 6;
   channel |= digitalRead(CHAN_PIN_BIT_8) << 7;
 
-
-
   radio.begin();
   radio.setChannel(channel);
   radio.setAutoAck(false);
@@ -55,19 +71,10 @@ void setup() {
 	radio.stopListening();
   radio.powerUp();
 
-  pinMode(CHAN_PIN_BIT_1, INPUT);
-  pinMode(CHAN_PIN_BIT_2, INPUT);
-  pinMode(CHAN_PIN_BIT_3, INPUT);
-  pinMode(CHAN_PIN_BIT_4, INPUT);
-  pinMode(CHAN_PIN_BIT_5, INPUT);
-  pinMode(CHAN_PIN_BIT_6, INPUT);
-  pinMode(CHAN_PIN_BIT_7, INPUT);
-  pinMode(CHAN_PIN_BIT_8, INPUT);
-
-
-
   psx.setupPins(PS2_DATA_PIN, PS2_CMD_PIN, PS2_ATT_PIN, PS2_CLK_PIN, 10);
   psx.config(PSXMODE_ANALOG);
+
+  // send a beep
 }
 
 void loop() {
