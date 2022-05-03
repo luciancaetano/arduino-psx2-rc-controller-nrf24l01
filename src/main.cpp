@@ -5,13 +5,22 @@
 #include <types.h>
 #include <PSX.h>
 
-#define CE_RF_PIN 5
-#define CS_RF_PIN 6
+#define CE_RF_PIN 6
+#define CS_RF_PIN 7
 
 #define PS2_ATT_PIN  2
 #define PS2_CMD_PIN  3
 #define PS2_DATA_PIN  4
 #define PS2_CLK_PIN  5
+
+#define CHAN_PIN_BIT_1 8
+#define CHAN_PIN_BIT_2 9
+#define CHAN_PIN_BIT_3 10
+#define CHAN_PIN_BIT_4 11
+#define CHAN_PIN_BIT_5 12
+#define CHAN_PIN_BIT_6 13
+#define CHAN_PIN_BIT_7 14
+#define CHAN_PIN_BIT_8 15
 
 RF24 radio(CE_RF_PIN, CS_RF_PIN);
 PS2Keys keyValues;
@@ -26,12 +35,36 @@ void readPSX();
 void setup() {
   delay(10);
 
+  int channel = 0;
+  channel |= digitalRead(CHAN_PIN_BIT_1) << 0;
+  channel |= digitalRead(CHAN_PIN_BIT_2) << 1;
+  channel |= digitalRead(CHAN_PIN_BIT_3) << 2;
+  channel |= digitalRead(CHAN_PIN_BIT_4) << 3;
+  channel |= digitalRead(CHAN_PIN_BIT_5) << 4;
+  channel |= digitalRead(CHAN_PIN_BIT_6) << 5;
+  channel |= digitalRead(CHAN_PIN_BIT_7) << 6;
+  channel |= digitalRead(CHAN_PIN_BIT_8) << 7;
+
+
+
   radio.begin();
+  radio.setChannel(channel);
   radio.setAutoAck(false);
   radio.setDataRate(RF24_250KBPS);
 	radio.setPALevel(RF24_PA_MAX);
 	radio.stopListening();
   radio.powerUp();
+
+  pinMode(CHAN_PIN_BIT_1, INPUT);
+  pinMode(CHAN_PIN_BIT_2, INPUT);
+  pinMode(CHAN_PIN_BIT_3, INPUT);
+  pinMode(CHAN_PIN_BIT_4, INPUT);
+  pinMode(CHAN_PIN_BIT_5, INPUT);
+  pinMode(CHAN_PIN_BIT_6, INPUT);
+  pinMode(CHAN_PIN_BIT_7, INPUT);
+  pinMode(CHAN_PIN_BIT_8, INPUT);
+
+
 
   psx.setupPins(PS2_DATA_PIN, PS2_CMD_PIN, PS2_ATT_PIN, PS2_CLK_PIN, 10);
   psx.config(PSXMODE_ANALOG);
