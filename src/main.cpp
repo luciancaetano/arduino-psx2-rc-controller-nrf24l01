@@ -3,7 +3,7 @@
 #include <nRF24L01.h>
 #include <RF24.h>
 #include <types.h>
-#include <PSX.h>
+#include <PS2X_lib.h>
 
 #define CE_RF_PIN 9
 #define CS_RF_PIN 10
@@ -29,12 +29,10 @@
 const uint64_t pipe = 0xE8E8F0F0E1LL; // Define the transmit pipe
 
 RF24 radio(CE_RF_PIN, CS_RF_PIN);
+PS2X ps2x;
 PS2Keys keyValues;
-PSX psx;
 
-int PSXerror;
-
-PSX::PSXDATA PSXdata;
+int PSXerror = 0;
 
 void readPSX();
 
@@ -63,11 +61,31 @@ void setup() {
   channel |= digitalRead(CHAN_PIN_BIT_8) << 7;
 
 
-  psx.setupPins(PS2_DATA_PIN, PS2_CMD_PIN, PS2_ATT_PIN, PS2_CLK_PIN, 10);
-  psx.config(PSXMODE_ANALOG);
+  PSXerror = ps2x.config_gamepad(PS2_CLK_PIN, PS2_CMD_PIN, PS2_ATT_PIN, PS2_DATA_PIN, true, true);
+
+  if(PSXerror != 0) {
+    while(true){
+      for(int i = 0; i < 4; i++) {
+        tone(BUZZER_PIN, 1000);
+        delay(100);
+        noTone(BUZZER_PIN);
+        delay(100);
+      }
+      delay(1000);
+    }
+  }
+
 
   if(!radio.begin()) {
-    while(1);
+        while(true){
+      for(int i = 0; i < 3; i++) {
+        tone(BUZZER_PIN, 1000);
+        delay(100);
+        noTone(BUZZER_PIN);
+        delay(100);
+      }
+      delay(1000);
+    }
   }
 
   radio.openWritingPipe(pipe);
@@ -77,7 +95,9 @@ void setup() {
 	radio.setPALevel(RF24_PA_MAX);
 	radio.stopListening();
 
-  tone(BUZZER_PIN, 196, 200);
+  tone(BUZZER_PIN, 1000);
+  delay(100);
+  noTone(BUZZER_PIN);
 }
 
 void loop() {
@@ -89,27 +109,34 @@ void loop() {
 }
 
 void readPSX() {
-  PSXerror = psx.read(PSXdata);
+  if(PSXerror == 1) return;
 
-  if(PSXerror == PSXERROR_SUCCESS) {
-    keyValues.analogKeys.leftX = PSXdata.JoyLeftX;
-    keyValues.analogKeys.leftY = PSXdata.JoyLeftY;
-    keyValues.analogKeys.rghtX = PSXdata.JoyRightX;
-    keyValues.analogKeys.rghtY = PSXdata.JoyRightY;
+  ps2x.read_gamepad(false, false);
 
-    keyValues.digitalKeys.bits.lf = PSXdata.buttons & PSXBTN_LEFT;
-    keyValues.digitalKeys.bits.rt = PSXdata.buttons & PSXBTN_RIGHT;
-    keyValues.digitalKeys.bits.up = PSXdata.buttons & PSXBTN_UP;
-    keyValues.digitalKeys.bits.dn = PSXdata.buttons & PSXBTN_DOWN;
-    keyValues.digitalKeys.bits.l1 = PSXdata.buttons & PSXBTN_L1;
-    keyValues.digitalKeys.bits.r1 = PSXdata.buttons & PSXBTN_R1;
-    keyValues.digitalKeys.bits.l2 = PSXdata.buttons & PSXBTN_L2;
-    keyValues.digitalKeys.bits.r2 = PSXdata.buttons & PSXBTN_R2;
-    keyValues.digitalKeys.bits.tr = PSXdata.buttons & PSXBTN_TRIANGLE;
-    keyValues.digitalKeys.bits.cr = PSXdata.buttons & PSXBTN_CROSS;
-    keyValues.digitalKeys.bits.sq = PSXdata.buttons & PSXBTN_SQUARE;
-    keyValues.digitalKeys.bits.cl = PSXdata.buttons & PSXBTN_CIRCLE;
-    keyValues.digitalKeys.bits.sl = PSXdata.buttons & PSXBTN_SELECT;
-    keyValues.digitalKeys.bits.st = PSXdata.buttons & PSXBTN_START;
-  }
+
+  keyValues.digitalKeys.START = ps2x.Button(PSB_START);
+  keyValues.digitalKeys.SELECT = ps2x.Button(PSB_SELECT);
+
+  keyValues.digitalKeys.CIRCLE = ps2x.Button(PSB_CIRCLE);
+  keyValues.digitalKeys.CROSS = ps2x.Button(PSB_CROSS);
+  keyValues.digitalKeys.SQUARE = ps2x.Button(PSB_SQUARE);
+  keyValues.digitalKeys.TRIANGLE = ps2x.Button(PSB_TRIANGLE);
+
+  keyValues.digitalKeys.LEFT = ps2x.Button(PSB_PAD_LEFT);
+  keyValues.digitalKeys.RIGHT = ps2x.Button(PSB_PAD_RIGHT);
+  keyValues.digitalKeys.UP = ps2x.Button(PSB_PAD_UP);
+  keyValues.digitalKeys.DOWN = ps2x.Button(PSB_PAD_DOWN);
+
+  keyValues.digitalKeys.L1 = ps2x.Button(PSB_L1);
+  keyValues.digitalKeys.L2 = ps2x.Button(PSB_L2);
+  keyValues.digitalKeys.R1 = ps2x.Button(PSB_R1);
+  keyValues.digitalKeys.R2 = ps2x.Button(PSB_R2);
+  keyValues.digitalKeys.L3 = ps2x.Button(PSB_L3);
+  keyValues.digitalKeys.R3 = ps2x.Button(PSB_R3);
+
+  keyValues.analogKeys.LX = ps2x.Analog(PSS_LX);
+  keyValues.analogKeys.LY = ps2x.Analog(PSS_LY);
+
+  keyValues.analogKeys.RX = ps2x.Analog(PSS_RX);
+  keyValues.analogKeys.RY = ps2x.Analog(PSS_RY);
 }
