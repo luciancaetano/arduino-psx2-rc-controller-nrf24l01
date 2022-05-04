@@ -7,6 +7,7 @@
 
 #define CE_RF_PIN 9
 #define CS_RF_PIN 10
+#define NRF_SPICLOCK 500000 // 8mhz 16mhz/2 = RF24_SPI_SPEED / 2 = 500000
 
 // BK GND
 // RED VCC
@@ -28,7 +29,7 @@
 
 const uint64_t pipe = 0xE8E8F0F0E1LL; // Define the transmit pipe
 
-RF24 radio(CE_RF_PIN, CS_RF_PIN);
+RF24 radio(CE_RF_PIN, CS_RF_PIN, NRF_SPICLOCK);
 PS2X ps2x;
 PS2Keys keyValues;
 
