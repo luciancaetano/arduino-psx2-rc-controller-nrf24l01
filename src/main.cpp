@@ -5,26 +5,29 @@
 #include <types.h>
 #include <PSX.h>
 
-#define CE_RF_PIN 6
-#define CS_RF_PIN 7
+#define CE_RF_PIN 9
+#define CS_RF_PIN 10
 
 #define SCK_PIN 13
 #define MISO_PIN 12
 #define MOSI_PIN 11
-#define SS_PIN 10
 
-#define PS2_ATT_PIN  2
-#define PS2_CMD_PIN  3
-#define PS2_DATA_PIN  4
-#define PS2_CLK_PIN  5
 
-#define CHAN_PIN_BIT_1 6
-#define CHAN_PIN_BIT_2 7
-#define CHAN_PIN_BIT_3 8
-#define CHAN_PIN_BIT_4 A0
-#define CHAN_PIN_BIT_5 A1
-#define CHAN_PIN_BIT_6 A2
-#define CHAN_PIN_BIT_7 A3
+
+// PRETO GND
+// VERMELHO VCC
+#define PS2_ATT_PIN  2 // amarelo
+#define PS2_CMD_PIN  3 // laranja
+#define PS2_DATA_PIN  4 // marrom
+#define PS2_CLK_PIN  5 // azul
+
+#define CHAN_PIN_BIT_1 8
+#define CHAN_PIN_BIT_2 A1
+#define CHAN_PIN_BIT_3 A2
+#define CHAN_PIN_BIT_4 A3
+#define CHAN_PIN_BIT_5 A4
+#define CHAN_PIN_BIT_6 A5
+#define CHAN_PIN_BIT_7 A6
 #define CHAN_PIN_BIT_8 A7
 
 #define BUZZER_PIN 9
@@ -42,26 +45,26 @@ void readPSX();
 void setup() {
   delay(10);
 
-  pinMode(CHAN_PIN_BIT_1, INPUT);
-  pinMode(CHAN_PIN_BIT_2, INPUT);
-  pinMode(CHAN_PIN_BIT_3, INPUT);
-  pinMode(CHAN_PIN_BIT_4, INPUT);
-  pinMode(CHAN_PIN_BIT_5, INPUT);
-  pinMode(CHAN_PIN_BIT_6, INPUT);
-  pinMode(CHAN_PIN_BIT_7, INPUT);
-  pinMode(CHAN_PIN_BIT_8, INPUT);
+  // pinMode(CHAN_PIN_BIT_1, INPUT);
+  // pinMode(CHAN_PIN_BIT_2, INPUT);
+  // pinMode(CHAN_PIN_BIT_3, INPUT);
+  // pinMode(CHAN_PIN_BIT_4, INPUT);
+  // pinMode(CHAN_PIN_BIT_5, INPUT);
+  // pinMode(CHAN_PIN_BIT_6, INPUT);
+  // pinMode(CHAN_PIN_BIT_7, INPUT);
+  // pinMode(CHAN_PIN_BIT_8, INPUT);
 
   delay(10);
 
   int channel = 0;
-  channel |= digitalRead(CHAN_PIN_BIT_1) << 0;
-  channel |= digitalRead(CHAN_PIN_BIT_2) << 1;
-  channel |= digitalRead(CHAN_PIN_BIT_3) << 2;
-  channel |= digitalRead(CHAN_PIN_BIT_4) << 3;
-  channel |= digitalRead(CHAN_PIN_BIT_5) << 4;
-  channel |= digitalRead(CHAN_PIN_BIT_6) << 5;
-  channel |= digitalRead(CHAN_PIN_BIT_7) << 6;
-  channel |= digitalRead(CHAN_PIN_BIT_8) << 7;
+  // channel |= digitalRead(CHAN_PIN_BIT_1) << 0;
+  // channel |= digitalRead(CHAN_PIN_BIT_2) << 1;
+  // channel |= digitalRead(CHAN_PIN_BIT_3) << 2;
+  // channel |= digitalRead(CHAN_PIN_BIT_4) << 3;
+  // channel |= digitalRead(CHAN_PIN_BIT_5) << 4;
+  // channel |= digitalRead(CHAN_PIN_BIT_6) << 5;
+  // channel |= digitalRead(CHAN_PIN_BIT_7) << 6;
+  // channel |= digitalRead(CHAN_PIN_BIT_8) << 7;
 
   radio.begin();
   radio.setChannel(channel);
@@ -81,6 +84,7 @@ void loop() {
   readPSX();
 
 	radio.stopListening();
+
   radio.write(&keyValues, sizeof(keyValues));
 
   delay(10);
