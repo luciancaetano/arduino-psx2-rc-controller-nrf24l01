@@ -113,6 +113,24 @@ void loop() {
   delay(50);
 }
 
+#define BTN_L1 0
+#define BTN_L2 1
+#define BTN_R1 2
+#define BTN_R2 3
+#define BTN_L3 4
+#define BTN_R3 5
+#define BTN_UP 6
+#define BTN_DOWN 7
+#define BTN_LEFT 8
+#define BTN_RIGHT 9
+#define BTN_TRIANGLE 10
+#define BTN_CROSS 11
+#define BTN_SQUARE 12
+#define BTN_CIRCLE 13
+#define BTN_SELECT 14
+#define BTN_START 15
+
+
 void readPSX() {
   if(PSXerror > 0) return;
 
@@ -124,24 +142,20 @@ void readPSX() {
   keyValues.analogKeys.RX = ps2x.Analog(PSS_RX);
   keyValues.analogKeys.RY = ps2x.Analog(PSS_RY);
 
-  keyValues.digitalKeys.LEFT = ps2x.Button(PSB_PAD_LEFT) ? 'f' : 't';
-  keyValues.digitalKeys.RIGHT = ps2x.Button(PSB_PAD_RIGHT) ? 'f' : 't';
-  keyValues.digitalKeys.UP = ps2x.Button(PSB_PAD_UP) ? 'f' : 't';
-  keyValues.digitalKeys.DOWN = ps2x.Button(PSB_PAD_DOWN) ? 'f' : 't';
-
-  keyValues.digitalKeys.START = ps2x.Button(PSB_START) ? 'f' : 't';
-  keyValues.digitalKeys.SELECT = ps2x.Button(PSB_SELECT) ? 'f' : 't';
-
-  keyValues.digitalKeys.CIRCLE = ps2x.Button(PSB_CIRCLE) ? 'f' : 't';
-  keyValues.digitalKeys.CROSS = ps2x.Button(PSB_CROSS) ? 'f' : 't';
-  keyValues.digitalKeys.SQUARE = ps2x.Button(PSB_SQUARE) ? 'f' : 't';
-  keyValues.digitalKeys.TRIANGLE = ps2x.Button(PSB_TRIANGLE) ? 'f' : 't';
-
-  keyValues.digitalKeys.L1 = ps2x.Button(PSB_L1) ? 'f' : 't';
-  keyValues.digitalKeys.L2 = ps2x.Button(PSB_L2) ? 'f' : 't';
-  keyValues.digitalKeys.R1 = ps2x.Button(PSB_R1) ? 'f' : 't';
-  keyValues.digitalKeys.R2 = ps2x.Button(PSB_R2) ? 'f' : 't';
-  keyValues.digitalKeys.L3 = ps2x.Button(PSB_L3) ? 'f' : 't';
-  keyValues.digitalKeys.R3 = ps2x.Button(PSB_R3) ? 'f' : 't';
-
+  keyValues.digitalKeys[BTN_L1] = ps2x.Button(PSB_L1) ? '1' : '0';
+  keyValues.digitalKeys[BTN_L2] = ps2x.Button(PSB_L2) ? '1' : '0';
+  keyValues.digitalKeys[BTN_R1] = ps2x.Button(PSB_R1) ? '1' : '0';
+  keyValues.digitalKeys[BTN_R2] = ps2x.Button(PSB_R2) ? '1' : '0';
+  keyValues.digitalKeys[BTN_L3] = ps2x.Button(PSB_L3) ? '1' : '0';
+  keyValues.digitalKeys[BTN_R3] = ps2x.Button(PSB_R3) ? '1' : '0';
+  keyValues.digitalKeys[BTN_UP] = ps2x.Button(PSB_PAD_UP) ? '1' : '0';
+  keyValues.digitalKeys[BTN_DOWN] = ps2x.Button(PSB_PAD_DOWN) ? '1' : '0';
+  keyValues.digitalKeys[BTN_LEFT] = ps2x.Button(PSB_PAD_LEFT) ? '1' : '0';
+  keyValues.digitalKeys[BTN_RIGHT] = ps2x.Button(PSB_PAD_RIGHT) ? '1' : '0';
+  keyValues.digitalKeys[BTN_TRIANGLE] = ps2x.Button(PSB_TRIANGLE) ? '1' : '0';
+  keyValues.digitalKeys[BTN_CROSS] = ps2x.Button(PSB_CROSS) ? '1' : '0';
+  keyValues.digitalKeys[BTN_SQUARE] = ps2x.Button(PSB_SQUARE) ? '1' : '0';
+  keyValues.digitalKeys[BTN_CIRCLE] = ps2x.Button(PSB_CIRCLE) ? '1' : '0';
+  keyValues.digitalKeys[BTN_SELECT] = ps2x.Button(PSB_SELECT) ? '1' : '0';
+  keyValues.digitalKeys[BTN_START] = ps2x.Button(PSB_START) ? '1' : '0';
 }

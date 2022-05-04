@@ -5,27 +5,26 @@ typedef struct Analogs {
 	unsigned int RY;
 };
 
-typedef union Digitals{
-	unsigned char L1 : 1;
-	unsigned char L2 : 1;
-	unsigned char R1 : 1;
-	unsigned char R2 : 1;
-	unsigned char L3 : 1;
-	unsigned char R3 : 1;
-	unsigned char UP : 1;
-	unsigned char DOWN : 1;
-	unsigned char LEFT : 1;
-	unsigned char RIGHT : 1;
-	unsigned char TRIANGLE : 1;
-	unsigned char CROSS : 1;
-	unsigned char SQUARE : 1;
-	unsigned char CIRCLE : 1;
-	unsigned char SELECT : 1;
-	unsigned char START : 1;
-} ;
+#define BTN_L1 0
+#define BTN_L2 1
+#define BTN_R1 2
+#define BTN_R2 3
+#define BTN_L3 4
+#define BTN_R3 5
+#define BTN_UP 6
+#define BTN_DOWN 7
+#define BTN_LEFT 8
+#define BTN_RIGHT 9
+#define BTN_TRIANGLE 10
+#define BTN_CROSS 11
+#define BTN_SQUARE 12
+#define BTN_CIRCLE 13
+#define BTN_SELECT 14
+#define BTN_START 15
 
-struct PS2Keys {
+
+typedef struct PS2Keys {
+	char digitalKeys[16];
 	Analogs analogKeys;
-	Digitals digitalKeys;
 };
 
