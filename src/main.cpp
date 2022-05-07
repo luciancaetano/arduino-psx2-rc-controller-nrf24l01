@@ -38,80 +38,28 @@ int PSXerror = 0;
 void readPSX();
 
 void setup() {
-  delay(10);
-
-  pinMode(CHAN_PIN_BIT_1, INPUT);
-  pinMode(CHAN_PIN_BIT_2, INPUT);
-  pinMode(CHAN_PIN_BIT_3, INPUT);
-  pinMode(CHAN_PIN_BIT_4, INPUT);
-  pinMode(CHAN_PIN_BIT_5, INPUT);
-  pinMode(CHAN_PIN_BIT_6, INPUT);
-  pinMode(CHAN_PIN_BIT_7, INPUT);
-  pinMode(CHAN_PIN_BIT_8, INPUT);
-
-  delay(10);
-
-  int channel = 0;
-  channel |= digitalRead(CHAN_PIN_BIT_1) << 0;
-  channel |= digitalRead(CHAN_PIN_BIT_2) << 1;
-  channel |= digitalRead(CHAN_PIN_BIT_3) << 2;
-  channel |= digitalRead(CHAN_PIN_BIT_4) << 3;
-  channel |= digitalRead(CHAN_PIN_BIT_5) << 4;
-  channel |= digitalRead(CHAN_PIN_BIT_6) << 5;
-  channel |= digitalRead(CHAN_PIN_BIT_7) << 6;
-  channel |= digitalRead(CHAN_PIN_BIT_8) << 7;
-
-
   PSXerror = ps2x.config_gamepad(PS2_CLK_PIN, PS2_CMD_PIN, PS2_ATT_PIN, PS2_DATA_PIN, false, false);
 
   if(PSXerror != 0) {
-    while(true){
-      for(int i = 0; i < 4; i++) {
-        tone(BUZZER_PIN, 1000);
-        delay(100);
-        noTone(BUZZER_PIN);
-        delay(100);
-      }
-      delay(1000);
-    }
+    while(true){    }
   }
 
-
   if(!radio.begin()) {
-        while(true){
-      for(int i = 0; i < 3; i++) {
-        tone(BUZZER_PIN, 1000);
-        delay(100);
-        noTone(BUZZER_PIN);
-        delay(100);
-      }
-      delay(1000);
-    }
+        while(true){    }
   }
 
   radio.openWritingPipe(pipe);
-  radio.setChannel(channel);
+  radio.setChannel(77);
   radio.setAutoAck(false);
   radio.setDataRate(RF24_250KBPS);
 	radio.setPALevel(RF24_PA_MAX);
 	radio.stopListening();
-
-  // play two beeps
-  tone(BUZZER_PIN, 1000);
-  delay(100);
-  noTone(BUZZER_PIN);
-  delay(100);
-  tone(BUZZER_PIN, 1000);
-  delay(100);
-  noTone(BUZZER_PIN);
 }
 
 void loop() {
   readPSX();
 
   radio.write(&keyValues, sizeof(keyValues));
-
-  delay(50);
 }
 
 void readPSX() {
