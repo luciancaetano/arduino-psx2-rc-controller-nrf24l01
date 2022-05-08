@@ -49,7 +49,7 @@ void setup() {
   }
 
   radio.openWritingPipe(pipe);
-  radio.setChannel(77);
+  radio.setChannel(100);
   radio.setAutoAck(false);
   radio.setDataRate(RF24_250KBPS);
 	radio.setPALevel(RF24_PA_MAX);
