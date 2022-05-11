@@ -1,8 +1,8 @@
 typedef struct Analogs {
-	unsigned int LX;
-	unsigned int LY;
-	unsigned int RX;
-	unsigned int RY;
+	unsigned int LX; // -255...0...255
+	unsigned int LY; // -255...0...255
+	unsigned int RX; // -255...0...255
+	unsigned int RY; // -255...0...255
 };
 
 #define BTN_L1 0
