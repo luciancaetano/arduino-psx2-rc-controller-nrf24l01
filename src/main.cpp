@@ -46,6 +46,8 @@ void loop() {
   readPSX();
 
   radio.write(&keyValues, sizeof(keyValues));
+
+  delay(10);
 }
 
 void readPSX() {
