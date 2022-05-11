@@ -53,11 +53,11 @@ void readPSX() {
 
   ps2x.read_gamepad();
 
-  keyValues.analogKeys.LX = (ps2x.Analog(PSS_LX) - 128) * 2;
-  keyValues.analogKeys.LY = (ps2x.Analog(PSS_LY) - 128) * 2;
+  keyValues.analogKeys.LX = ps2x.Analog(PSS_LX);
+  keyValues.analogKeys.LY = ps2x.Analog(PSS_LY);
 
-  keyValues.analogKeys.RX = (ps2x.Analog(PSS_RX) - 128) * 2;
-  keyValues.analogKeys.RY = (ps2x.Analog(PSS_RY) - 128) * 2;
+  keyValues.analogKeys.RX = ps2x.Analog(PSS_RX);
+  keyValues.analogKeys.RY = ps2x.Analog(PSS_RY);
 
   keyValues.digitalKeys[BTN_L1] = ps2x.Button(PSB_L1) ? '1' : '0';
   keyValues.digitalKeys[BTN_L2] = ps2x.Button(PSB_L2) ? '1' : '0';
